@@ -74,6 +74,7 @@ module Airbrake
           end
         end
       end
+
       xml.to_s
     end
 
