@@ -7,11 +7,12 @@ module Airbrake
       begin
         user = controller.send(:current_user)
       rescue Authlogic::Session::Activation::NotActivatedError
-        # TODO - Also rescue session error for devise
         # When running rake airbrake:test, use the first User.
         # Return empty hash if there are no users.
-        return {} unless user = User.first
+        user = User.first
       end
+      return {} unless user
+
       # Removes auth-related fields
       attributes = user.attributes.reject do |k, v|
         /password|token|login|sign_in|per_page|_at$/ =~ k
