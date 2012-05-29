@@ -4,7 +4,14 @@ module Airbrake
     # Returns filtered attributes for current user
     def self.filtered_attributes(controller)
       return {} unless controller.respond_to?(:current_user, true)
-      user = controller.send(:current_user)
+      begin
+        user = controller.send(:current_user)
+      rescue Authlogic::Session::Activation::NotActivatedError
+        # TODO - Also rescue session error for devise
+        # When running rake airbrake:test, use the first User.
+        # Return empty hash if there are no users.
+        return {} unless user = User.first
+      end
       # Removes auth-related fields
       attributes = user.attributes.reject do |k, v|
         /password|token|login|sign_in|per_page|_at$/ =~ k
