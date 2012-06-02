@@ -3,7 +3,7 @@ module Airbrake
 
     # Returns filtered attributes for current user
     def self.filtered_attributes(controller)
-      return {} unless controller.respond_to?(:current_user, true)
+      return {} unless controller.respond_to?(:current_user, true) && controller.send(:current_user).respond_to?(:attributes)
       begin
         user = controller.send(:current_user)
       rescue Authlogic::Session::Activation::NotActivatedError
