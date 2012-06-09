@@ -6,11 +6,12 @@ module Airbrake
       return {} unless controller.respond_to?(:current_user, true)
       begin
         user = controller.send(:current_user)
-      rescue Authlogic::Session::Activation::NotActivatedError
-        # When running rake airbrake:test, use the first User.
-        # Return empty hash if there are no users.
+      rescue
+        # If something goes wrong (perhaps while running rake airbrake:test),
+        # use the first User.
         user = User.first
       end
+      # Return empty hash if there are no users.
       return {} unless user && user.respond_to?(:attributes)
 
       # Removes auth-related fields
