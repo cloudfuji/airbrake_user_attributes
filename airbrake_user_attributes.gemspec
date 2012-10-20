@@ -22,6 +22,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency("sham_rack",     "~> 1.3.0")
   s.add_development_dependency("shoulda",       "~> 2.11.3")
 
-  s.add_dependency 'airbrake',           '3.0.9'
+  s.add_dependency 'airbrake',                  '~> 3.1.0'
 
 end
